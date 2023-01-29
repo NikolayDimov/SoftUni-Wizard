@@ -14,7 +14,7 @@
         <div class="game-score"><span class="points">0</span> pts.</div>
         <div class="game-start">Press to Play!</div>
         <div class="game-area"></div>
-        <div class="game-over"></div>
+        <div class="game-over hide">Game Over</div>
     </div>
 
     <script>
@@ -45,6 +45,7 @@
             buhSpawnInterval: 1000,
         };
         let gameInfo = {
+            isActiveGame: true,
             score: 0,
             lastCloudSpawn: 0,
             lastBugSpawn: 0,
@@ -160,7 +161,7 @@
             // Collision detection
             bugs.forEach(bug => {
                 if(isCollision(wizard, bug)) {
-
+                    gameOverFn();
                 }
             });
             
@@ -172,17 +173,24 @@
             // Apply score
             gamePoints.textContent = gameInfo.score;
 
-            window.requestAnimationFrame(gameAction);
+            if (gameInfo.isActiveGame) {
+                window.requestAnimationFrame(gameAction);  
+            }
         }
 
         function isCollision(firstElement, secondElement) {
-            let firstRec = firstElement.getBoundingClientRec();
-            let secondRec = secondElement.getBoundingClientRec();
+            let firstRec = firstElement.getBoundingClientRect();
+            let secondRec = secondElement.getBoundingClientRect();
 
             return !(firstRec.top > secondRec.bottom ||
                      firstRec.bottom < secondRec.top ||
                      firstRec.right < secondRec.left ||
                      firstRec.left > secondRec.right)
+        }
+
+        function gameOverFn() {
+            gameInfo.isActiveGame = false;
+            gameOver.classList.remove('hide');
         }
 
         function addFireBall(player) {
