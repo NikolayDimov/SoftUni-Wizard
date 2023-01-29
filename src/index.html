@@ -41,7 +41,7 @@
             movingMultiplayer: 3,
             fireBallMultiplayer: 4,
             fireInterval: 1000,
-            cloudSpawnInterval: 5000,
+            cloudSpawnInterval: 2000,
         };
         let gameInfo = {
             score: 0,
@@ -69,12 +69,12 @@
             gameInfo.score++;
 
             // Add clouds
-            if (timestamp - gameInfo.lastCloudSpawn > game.cloudSpawnInterval) {
+            if (timestamp - gameInfo.lastCloudSpawn > game.cloudSpawnInterval + 10000 * Math.random()) {
                 let cloud = document.createElement('div');
                 cloud.classList.add('cloud');
                 cloud.x = gameArea.offsetWidth - 200;
                 cloud.style.left = cloud.x + 'px';
-                cloud.style.top = '100px';
+                cloud.style.top = (gameArea.offsetHeight - 200) * Math.random() + 'px';
 
                 gameArea.appendChild(cloud);
                 gameInfo.lastCloudSpawn = timestamp;
