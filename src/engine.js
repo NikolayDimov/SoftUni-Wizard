@@ -1,11 +1,5 @@
 let keys = {};
-let player = {
-    x: 150,
-    y: 100,
-    width: 0,
-    height: 0,
-    lastTimeFiredFireball: 0,
-};
+
 
 let gameInfo = {
     isActiveGame: true,
@@ -13,6 +7,17 @@ let gameInfo = {
     lastCloudSpawn: 0,
     lastBugSpawn: 0,
 };
+
+let state = {
+    player: {
+        x: 150,
+        y: 100,
+        width: 0,
+        height: 0,
+        lastTimeFiredFireball: 0,
+    },
+
+}
 
 
 function isCollision(firstElement, secondElement) {
