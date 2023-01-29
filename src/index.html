@@ -43,6 +43,7 @@
             fireInterval: 1000,
             cloudSpawnInterval: 3000,
             buhSpawnInterval: 1000,
+            bugKillBonus: 2000,
         };
         let gameInfo = {
             isActiveGame: true,
@@ -153,7 +154,6 @@
                 wizard.classList.add('wizard-fire');
                 addFireBall(player);
                 player.lastTimeFiredFireball = timestamp;
-                isCollision(wizard, wizard);
             } else {
                 wizard.classList.remove('wizard-fire');
             }
@@ -163,6 +163,13 @@
                 if(isCollision(wizard, bug)) {
                     gameOverFn();
                 }
+                fireBalls.forEach(fireBall => {
+                    if (isCollision(fireBall, bug)) {
+                        gameInfo.score += game.bugKillBonus;
+                        bug.parentElement.removeChild(bug);
+                        fireBall.parentElement.removeChild(fireBall);
+                    }
+                })
             });
             
 
