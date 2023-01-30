@@ -1,6 +1,8 @@
 let keys = {};
 
-const initialState = () => ({
+const initialState = ({
+    areaWidth,
+}) => ({
     player: {
         x: 150,
         y: 100,
@@ -13,6 +15,9 @@ const initialState = () => ({
         score: 0,
         lastCloudSpawn: 0,
         lastBugSpawn: 0,
+        areaWidth,
+        attackWidth: 40,
+        attackHeight: 40,
     },
     clouds: [],
     attacks: [],
@@ -23,7 +28,15 @@ const initialState = () => ({
 const nextPlayer = (state) => state.player;
 const nextGameInfo = (state) => state.gameInfo;
 const nextClouds = (state) => state.clouds;
-const nextAttacks = (state) => state.attacks.map(a => ({...a, x: a.x += game.speed * game.fireBallMultiplayer}));
+const nextAttacks = (state) => state.attacks
+.filter(a => {
+    if(a.x + state.gameInfo.attackWidth > state.gameInfo.areaWidth) {
+        a.el.parentElement.removeChild(a.el);
+        return false;
+    }
+    return true;
+})
+.map(a => ({...a, x: a.x += game.speed * game.fireBallMultiplayer}));
 const nextBugs = (state) => state.bugs;
 
 const next = (state) => ({
