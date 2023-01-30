@@ -28,6 +28,8 @@ function onGameStart() {
     state.player.width = wizard.offsetWidth;
     state.player.height = wizard.offsetHeight;
 
+    state.player.w = wizard.offsetWidth;
+    state.player.h =  wizard.offsetHeight;
     window.requestAnimationFrame(frame(0));
 }
 
@@ -61,6 +63,8 @@ function gameAction(timestamp, state) {
         state.bugs.push({
             x: gameArea.offsetWidth - 60,
             y: (gameArea.offsetHeight - 60) * Math.random(),
+            w: bug.offsetWidth,
+            h: bug.offsetHeight,
             el: bug,
         });
     }
@@ -79,14 +83,16 @@ function gameAction(timestamp, state) {
 
     // Modify bug positions
     let bugs = document.querySelectorAll('.bug');
-    bugs.forEach(bug => {
-        bug.x -= game.speed * 2;
-        bug.style.left = bug.x + 'px';
+    // bugs.forEach(bug => {
+    //     bug.x -= game.speed * 2;
+    //     bug.style.left = bug.x + 'px';
 
-        if (bug.x + bugs.offsetWidth <= 0) {
-            bug.parentElement.removeChild(bug);
-        }
-    });
+    //     if (bug.x + bugs.offsetWidth <= 0) {
+    //         bug.parentElement.removeChild(bug);
+    //     }
+    // });
+
+    state.bugs.forEach(b => b.el.style.left = b.x + 'px');
 
     // Modify clouds positions
     let clouds = document.querySelectorAll('.cloud');
@@ -144,9 +150,9 @@ function gameAction(timestamp, state) {
 
     // Collision detection
     bugs.forEach(bug => {
-        if(isCollision(wizard, bug)) {
-            gameOverFn();
-        }
+        // if(isCollision(wizard, bug)) {
+        //     gameOverFn();
+        // }
         fireBalls.forEach(fireBall => {
             if (isCollision(fireBall, bug)) {
                 state.gameInfo.score += game.bugKillBonus;

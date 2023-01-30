@@ -11,6 +11,8 @@ const initialState = ({
         y: 100,
         width: 0,
         height: 0,
+        w: 0,
+        h: 0,
         lastTimeFiredFireball: 0,
     },
     gameInfo: {
@@ -53,6 +55,9 @@ const nextBugs = (state) => state.bugs
             removeEl(b.el);
             return false;
         }
+        if (isCol(state.player, b)) {
+            gameOverFn();
+        }
         return true;
     }) 
     .map(b => {
@@ -80,6 +85,8 @@ function isCollision(firstElement, secondElement) {
         firstRec.left > secondRec.right)
 }
 
+
+ 
 function gameOverFn() {
     state.gameInfo.isActiveGame = false;
     gameOver.classList.remove('hide');
