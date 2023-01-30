@@ -19,12 +19,19 @@ const initialState = () => ({
     bugs: [],
 });
 
+
+const nextPlayer = (state) => state.player;
+const nextGameInfo = (state) => state.gameInfo;
+const nextClouds = (state) => state.clouds;
+const nextAttacks = (state) => state.attacks;
+const nextBugs = (state) => state.bugs;
+
 const next = (state) => ({
-    player: state.player,
-    gameInfo: state.gameInfo,
-    clouds: state.clouds,
-    attacks: state.attacks,
-    bugs: state.bugs,
+    player: nextPlayer(state),
+    gameInfo: nextGameInfo(state),
+    clouds: nextClouds(state),
+    attacks: nextAttacks(state),
+    bugs: nextBugs(state),
 });
 
 
