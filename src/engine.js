@@ -23,7 +23,7 @@ const initialState = () => ({
 const nextPlayer = (state) => state.player;
 const nextGameInfo = (state) => state.gameInfo;
 const nextClouds = (state) => state.clouds;
-const nextAttacks = (state) => state.attacks;
+const nextAttacks = (state) => state.attacks.map(a => ({...a, x: a.x += game.speed * game.fireBallMultiplayer}));
 const nextBugs = (state) => state.bugs;
 
 const next = (state) => ({
@@ -50,12 +50,19 @@ function gameOverFn() {
     gameOver.classList.remove('hide');
 }
 
-function addFireBall(player) {
+function addFireBall(state) {
     let fireBall = document.createElement('div');
     fireBall.classList.add('fire-ball')
-    fireBall.style.top = (player.y + player.height / 3) + 'px';
-    fireBall.x = player.x + player.width;
+    fireBall.style.top = (state.player.y + state.player.height / 3 - 5) + 'px';
+    fireBall.x = state.player.x + state.player.width;
     fireBall.style.left = fireBall.x + 'px';
+
+    state.attacks.push({
+        x: state.player.x,
+        y: state.player.y + state.player.height / 3 - 5,
+        el: fireBall,
+    });
+
     gameArea.appendChild(fireBall);
 }
 
