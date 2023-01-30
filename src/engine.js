@@ -2,6 +2,9 @@ let keys = {};
 
 const initialState = ({
     areaWidth,
+    bugWidth,
+    bugHeight,
+    // тук може да подадем -> options
 }) => ({
     player: {
         x: 150,
@@ -16,8 +19,11 @@ const initialState = ({
         lastCloudSpawn: 0,
         lastBugSpawn: 0,
         areaWidth,
+        // след което тук да подадем -> ... options
         attackWidth: 40,
         attackHeight: 40,
+        bugWidth, 
+        bugHeight,
     },
     clouds: [],
     attacks: [],
@@ -29,15 +35,31 @@ const nextPlayer = (state) => state.player;
 const nextGameInfo = (state) => state.gameInfo;
 const nextClouds = (state) => state.clouds;
 const nextAttacks = (state) => state.attacks
-.filter(a => {
-    if(a.x + state.gameInfo.attackWidth > state.gameInfo.areaWidth) {
-        a.el.parentElement.removeChild(a.el);
-        return false;
-    }
-    return true;
-})
-.map(a => ({...a, x: a.x += game.speed * game.fireBallMultiplayer}));
-const nextBugs = (state) => state.bugs;
+    .filter(a => {
+        if (a.x + state.gameInfo.attackWidth > state.gameInfo.areaWidth) {
+           removeEl(a.el);
+            return false;
+        }
+        return true;
+    })
+    .map(a => ({ ...a, x: a.x += game.speed * game.fireBallMultiplayer }));
+
+
+
+
+const nextBugs = (state) => state.bugs
+    .filter(b => {
+        if(b.x + state.gameInfo.bugWidth <= 0) {
+            removeEl(b.el);
+            return false;
+        }
+        return true;
+    }) 
+    .map(b => {
+        b.x -= game.speed * 2;
+        return b;
+    });
+
 
 const next = (state) => ({
     player: nextPlayer(state),
@@ -53,11 +75,11 @@ function isCollision(firstElement, secondElement) {
     let secondRec = secondElement.getBoundingClientRect();
 
     return !(firstRec.top > secondRec.bottom ||
-             firstRec.bottom < secondRec.top ||
-             firstRec.right < secondRec.left ||
-             firstRec.left > secondRec.right)
+        firstRec.bottom < secondRec.top ||
+        firstRec.right < secondRec.left ||
+        firstRec.left > secondRec.right)
 }
- 
+
 function gameOverFn() {
     state.gameInfo.isActiveGame = false;
     gameOver.classList.remove('hide');

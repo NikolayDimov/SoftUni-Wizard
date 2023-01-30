@@ -11,6 +11,9 @@ document.addEventListener('keyup', onKeyUp);
  
 let state = initialState({
     areaWidth: gameArea.offsetWidth,
+    attackWidth: 40,
+    bugWidth: 60,
+    bugHeight: 60,
 });
 
 function onGameStart() {
@@ -54,6 +57,12 @@ function gameAction(timestamp, state) {
 
         gameArea.appendChild(bug);
         state.gameInfo.lastBugSpawn = timestamp;
+
+        state.bugs.push({
+            x: gameArea.offsetWidth - 60,
+            y: (gameArea.offsetHeight - 60) * Math.random(),
+            el: bug,
+        });
     }
 
     // Add clouds

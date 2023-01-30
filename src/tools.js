@@ -8,3 +8,5 @@ let game = {
     buhSpawnInterval: 1000,
     bugKillBonus: 2000,
 };
+
+const removeEl = e => e.parentElement.removeChild(e);
