@@ -1,14 +1,6 @@
 let keys = {};
 
-
-let gameInfo = {
-    isActiveGame: true,
-    score: 0,
-    lastCloudSpawn: 0,
-    lastBugSpawn: 0,
-};
-
-let state = {
+const initialState = () => ({
     player: {
         x: 150,
         y: 100,
@@ -16,8 +8,24 @@ let state = {
         height: 0,
         lastTimeFiredFireball: 0,
     },
+    gameInfo: {
+        isActiveGame: true,
+        score: 0,
+        lastCloudSpawn: 0,
+        lastBugSpawn: 0,
+    },
+    clouds: [],
+    attacks: [],
+    bugs: [],
+});
 
-}
+const next = (state) => ({
+    player: state.player,
+    gameInfo: state.gameInfo,
+    clouds: state.clouds,
+    attacks: state.attacks,
+    bugs: state.bugs,
+});
 
 
 function isCollision(firstElement, secondElement) {
@@ -29,9 +37,9 @@ function isCollision(firstElement, secondElement) {
              firstRec.right < secondRec.left ||
              firstRec.left > secondRec.right)
 }
-
+ 
 function gameOverFn() {
-    gameInfo.isActiveGame = false;
+    state.gameInfo.isActiveGame = false;
     gameOver.classList.remove('hide');
 }
 

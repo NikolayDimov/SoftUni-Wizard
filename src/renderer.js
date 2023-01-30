@@ -9,6 +9,7 @@ document.addEventListener('keydown', onKeyDown);
 document.addEventListener('keyup', onKeyUp);
 
  
+let state = initialState();
 
 function onGameStart() {
     gameStart.classList.add('hide')
@@ -28,19 +29,21 @@ function onGameStart() {
 
 const frame = t1 => t2 => {
     if (t2 - t1 > game.frameLength) {
+        state = next(state);
         gameAction(t2);
-        gameInfo.isActiveGame && window.requestAnimationFrame(frame(t2));  
+        // changing name gameAction to draw
+        state.gameInfo.isActiveGame && window.requestAnimationFrame(frame(t2));  
     } else {
         window.requestAnimationFrame(frame(t1));  
     }
-}
+} 
 
 function gameAction(timestamp) {
     const wizard = document.querySelector('.wizard');
-    gameInfo.score++;
+    state.gameInfo.score++;
 
     // Add bugs
-    if (timestamp - gameInfo.lastBugSpawn > game.buhSpawnInterval + 5000 * Math.random()) {
+    if (timestamp - state.gameInfo.lastBugSpawn > game.buhSpawnInterval + 5000 * Math.random()) {
         let bug = document.createElement('div');
         bug.classList.add('bug');
         bug.x = gameArea.offsetWidth - 60;
@@ -48,11 +51,11 @@ function gameAction(timestamp) {
         bug.style.top = (gameArea.offsetHeight - 60) * Math.random() + 'px';
 
         gameArea.appendChild(bug);
-        gameInfo.lastBugSpawn = timestamp;
+        state.gameInfo.lastBugSpawn = timestamp;
     }
 
     // Add clouds
-    if (timestamp - gameInfo.lastCloudSpawn > game.cloudSpawnInterval + 10000 * Math.random()) {
+    if (timestamp - state.gameInfo.lastCloudSpawn > game.cloudSpawnInterval + 10000 * Math.random()) {
         let cloud = document.createElement('div');
         cloud.classList.add('cloud');
         cloud.x = gameArea.offsetWidth - 200;
@@ -60,7 +63,7 @@ function gameAction(timestamp) {
         cloud.style.top = (gameArea.offsetHeight - 200) * Math.random() + 'px';
 
         gameArea.appendChild(cloud);
-        gameInfo.lastCloudSpawn = timestamp;
+        state.gameInfo.lastCloudSpawn = timestamp;
     }
 
     // Modify bug positions
@@ -132,7 +135,7 @@ function gameAction(timestamp) {
         }
         fireBalls.forEach(fireBall => {
             if (isCollision(fireBall, bug)) {
-                gameInfo.score += game.bugKillBonus;
+                state.gameInfo.score += game.bugKillBonus;
                 bug.parentElement.removeChild(bug);
                 fireBall.parentElement.removeChild(fireBall);
             }
@@ -145,7 +148,7 @@ function gameAction(timestamp) {
     wizard.style.left = state.player.x + 'px';
 
     // Apply score
-    gamePoints.textContent = gameInfo.score;
+    gamePoints.textContent = state.gameInfo.score;
 
 }
 
