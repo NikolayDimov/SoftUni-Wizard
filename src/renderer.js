@@ -30,7 +30,7 @@ function onGameStart() {
 const frame = t1 => t2 => {
     if (t2 - t1 > game.frameLength) {
         state = next(state);
-        gameAction(t2);
+        gameAction(t2, state);
         // changing name gameAction to draw
         state.gameInfo.isActiveGame && window.requestAnimationFrame(frame(t2));  
     } else {
@@ -38,7 +38,7 @@ const frame = t1 => t2 => {
     }
 } 
 
-function gameAction(timestamp) {
+function gameAction(timestamp, state) {
     const wizard = document.querySelector('.wizard');
     state.gameInfo.score++;
 
